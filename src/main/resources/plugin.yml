@@ -1,0 +1,4 @@
+name: nicodeCore
+version: '${project.version}'
+main: de.nicode3141.nicodecore.NicodeCore
+api-version: 1.19
