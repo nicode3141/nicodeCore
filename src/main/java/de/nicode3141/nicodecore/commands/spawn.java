@@ -2,6 +2,7 @@ package de.nicode3141.nicodecore.commands;
 
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -34,26 +35,13 @@ public class spawn implements CommandExecutor {
         int innerRadius = 5;
         int outerRadius = 5;
 
-        int randXLocation, randYLocation;
-
-        int xIO = (int) (Math.random() * 2);
-        int yIO = (int) (Math.random() * 2);
-
-        if(xIO%2 == 0) {
-            randXLocation = -(int) (Math.random() * outerRadius) + innerRadius*2;
-        }else {
-            randXLocation = (int) (Math.random() * outerRadius) + innerRadius*2;
-        }
-
-        double sqrt = Math.sqrt((Math.pow(outerRadius + innerRadius, 2) - Math.pow(innerRadius, 2) - Math.pow(randXLocation, 2)));
-        if(yIO%2 == 0) {
-            randYLocation = -(int) sqrt;
-        }else {
-            randYLocation = (int) sqrt;
-        }
+        Random random = new Random();
+        double angle = random.nextDouble() * 2 * Math.PI; // Random angle around the donut
+        double x = Math.sin(angle) * (outerRadius + innerRadius) + 0.5; // Offset by 0.5 to prevent being stuck in blocks
+        double z = Math.cos(angle) * (outerRadius + innerRadius) + 0.5;
 
 
-        Location spawnLocation = new Location(Bukkit.getWorld("world"), randXLocation + spawnIslandMid.getBlockX(),spawnIslandMid.getBlockY(),randYLocation + spawnIslandMid.getBlockZ());
+        Location spawnLocation = new Location(Bukkit.getWorld("world"), x + spawnIslandMid.getBlockX(),spawnIslandMid.getBlockY(),z + spawnIslandMid.getBlockZ());
 
         Player player = (Player) sender;
 
@@ -64,12 +52,13 @@ public class spawn implements CommandExecutor {
 
         } else {
 
-            int cooldownTime;
+            int cooldownTime = 2;
+            int countdownTime;
 
             if (playerLocation.distance(spawnLocation) < 99) {
-                cooldownTime = 1;
+                countdownTime = 1;
             } else {
-                cooldownTime = (int) Math.round(playerLocation.distance(spawnLocation) / 100);
+                countdownTime = (int) Math.round(playerLocation.distance(spawnLocation) / 100);
             }
 
             if (cooldowns.containsKey(player.getName())) {
@@ -82,9 +71,9 @@ public class spawn implements CommandExecutor {
 
             cooldowns.put(player.getName(), System.currentTimeMillis());
 
-            player.sendMessage(ChatColor.RED + String.valueOf(cooldownTime) +  ChatColor.YELLOW + " seconds to be teleported!");
+            player.sendMessage(ChatColor.RED + String.valueOf(countdownTime) +  ChatColor.YELLOW + " seconds to be teleported!");
 
-            for (int i = cooldownTime; i > 0; i--) {
+            for (int i = countdownTime; i > 0; i--) {
                 if(i == 10 || i <= 5){
                     player.sendMessage(ChatColor.RED + String.valueOf(i) + ChatColor.YELLOW + " seconds to be teleported!");
                 }
