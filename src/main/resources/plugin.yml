@@ -2,3 +2,16 @@ name: nicodeCore
 version: '${project.version}'
 main: de.nicode3141.nicodecore.NicodeCore
 api-version: 1.19
+commands:
+  spawn:
+    description: teleports player to spawn
+    usage: /spawn
+    aliases: Spawn
+    permission: spawn
+    permission-message: you have no permission to execute this command!
+  newspawn:
+    description: new spawn
+    usage: /newspawn
+    aliases: ns
+    permission: newspawn
+    permission-message: no permission!
