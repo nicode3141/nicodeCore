@@ -4,9 +4,7 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -36,9 +34,9 @@ public class spawn implements CommandExecutor {
         int outerRadius = 5;
 
         Random random = new Random();
-        double angle = random.nextDouble() * 2 * Math.PI; // Random angle around the donut
-        double x = Math.sin(angle) * (outerRadius + innerRadius) + 0.5; // Offset by 0.5 to prevent being stuck in blocks
-        double z = Math.cos(angle) * (outerRadius + innerRadius) + 0.5;
+        double angle = random.nextDouble() * 2 * Math.PI; // Random angle
+        double x = Math.sin(angle) * (outerRadius + innerRadius) + 0.5; // Offset by 0.5 to prevent being stuck in Blocks
+        double z = Math.cos(angle) * (outerRadius + innerRadius) + 0.5; // Same here (z in Minecraft is the y axis in irl)...
 
 
         Location spawnLocation = new Location(Bukkit.getWorld("world"), x + spawnIslandMid.getBlockX(),spawnIslandMid.getBlockY(),z + spawnIslandMid.getBlockZ());
@@ -75,7 +73,8 @@ public class spawn implements CommandExecutor {
 
             for (int i = countdownTime; i > 0; i--) {
                 if(i == 10 || i <= 5){
-                    player.sendMessage(ChatColor.RED + String.valueOf(i) + ChatColor.YELLOW + " seconds to be teleported!");
+                    player.sendTitle(ChatColor.GREEN + String.valueOf(i), "teleporting...", 1, 15, 4);
+                    player.playNote(player.getLocation(), Instrument.PIANO, Note.flat(1, Note.Tone.C));
                 }
                 try {
                     Thread.sleep(1000);
@@ -86,6 +85,7 @@ public class spawn implements CommandExecutor {
 
 
             player.teleport(spawnLocation);
+            player.playSound(spawnLocation, "entity.player.levelup", 100, 0.7F);
             player.sendMessage("§a[nicodeCore] You have been teleported to Spawn!");
 
             return true;

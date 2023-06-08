@@ -9,9 +9,9 @@ commands:
     aliases: Spawn
     permission: spawn
     permission-message: you have no permission to execute this command!
-  newspawn:
-    description: new spawn
-    usage: /newspawn
-    aliases: ns
-    permission: newspawn
+  rtp:
+    description: teleports player to a random location
+    usage: /rtp
+    aliases: randomteleport
+    permission: rtp
     permission-message: no permission!
