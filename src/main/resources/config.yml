@@ -1,0 +1,29 @@
+# Middle of your spawn:
+spawnCoordinates:
+  x: 100
+  y: 10 #!Important!: Height
+  z: 10
+
+#the inner Radius: the player wont get teleported in this area! -/spawn
+innerRadius: 5
+
+#outerRadius: !important: the full radius is innerRadius+outerRadius! -/spawn
+outerRadius: 4
+
+spawn:
+  #cooldown for the /Spawn command
+  cooldown: 10
+  #countdown is calculated by the distance between player and spawn!
+
+rtp:
+  #min
+  innerRadius: 100
+  #max
+  outerRadius: 2000
+  #cooldown for the player to teleport again
+  cooldown: 30
+  #time for the teleport: !important: generating a random location takes time too!
+  countdown: 5
+  #limit for the random generator (by increasing-> smaller chance for teleporting on water/lava/under a specific height OR FILTERBLOCKLIST (Experimental!))
+  maxTries: 2
+

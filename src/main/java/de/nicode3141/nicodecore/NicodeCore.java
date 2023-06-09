@@ -10,10 +10,15 @@ public final class NicodeCore extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+
+        getConfig().options().copyDefaults();
+        saveDefaultConfig();
+
         Bukkit.getLogger().info("Plugin NicodeCore loaded!");
 
         getCommand("spawn").setExecutor(new spawn(this));
-        getCommand("rtp").setExecutor(new rtp());
+        getCommand("rtp").setExecutor(new rtp(this));
+
     }
 
     @Override

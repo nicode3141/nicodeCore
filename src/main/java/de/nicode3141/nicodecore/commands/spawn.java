@@ -28,15 +28,15 @@ public class spawn implements CommandExecutor {
             return true;
         }
 
-        Location spawnIslandMid = new Location(Bukkit.getWorld("world"), 10,70,10);
+        Location spawnIslandMid = new Location(Bukkit.getWorld("world"), plugin.getConfig().getInt("spawnCoordinates.x"), plugin.getConfig().getInt("spawnCoordinates.y"), plugin.getConfig().getInt("spawnCoordinates.z"));
 
-        int innerRadius = 5;
-        int outerRadius = 5;
+        int innerRadius = plugin.getConfig().getInt("innerRadius");
+        int outerRadius = plugin.getConfig().getInt("outerRadius");
 
         Random random = new Random();
-        double angle = random.nextDouble() * 2 * Math.PI; // Random angle
-        double x = Math.sin(angle) * (outerRadius + innerRadius) + 0.5; // Offset by 0.5 to prevent being stuck in Blocks
-        double z = Math.cos(angle) * (outerRadius + innerRadius) + 0.5; // Same here (z in Minecraft is the y axis in irl)...
+        int angle = (int) ((int) random.nextDouble() * 2 * Math.PI); // Random angle
+        short x = (short) ((short) Math.sin(angle) * (outerRadius + innerRadius) + 0.5); // Offset by 0.5 to prevent being stuck in Blocks
+        short z = (short) ((short) Math.cos(angle) * (outerRadius + innerRadius) + 0.5); // Same here (z in Minecraft is the y axis in irl)...
 
 
         Location spawnLocation = new Location(Bukkit.getWorld("world"), x + spawnIslandMid.getBlockX(),spawnIslandMid.getBlockY(),z + spawnIslandMid.getBlockZ());
@@ -50,13 +50,15 @@ public class spawn implements CommandExecutor {
 
         } else {
 
-            int cooldownTime = 2;
-            int countdownTime;
+            int cooldownTime = plugin.getConfig().getInt("cooldown");
+            short countdownTime;
 
             if (playerLocation.distance(spawnLocation) < 99) {
                 countdownTime = 1;
+            } else if( (int) Math.round(playerLocation.distance(spawnLocation)) >= 3200){
+                countdownTime = (short) Math.round(playerLocation.distance(spawnLocation) / 100);
             } else {
-                countdownTime = (int) Math.round(playerLocation.distance(spawnLocation) / 100);
+                countdownTime = 32;
             }
 
             if (cooldowns.containsKey(player.getName())) {
@@ -71,7 +73,7 @@ public class spawn implements CommandExecutor {
 
             player.sendMessage(ChatColor.RED + String.valueOf(countdownTime) +  ChatColor.YELLOW + " seconds to be teleported!");
 
-            for (int i = countdownTime; i > 0; i--) {
+            for (short i = countdownTime; i > 0; i--) {
                 if(i == 10 || i <= 5){
                     player.sendTitle(ChatColor.GREEN + String.valueOf(i), "teleporting...", 1, 15, 4);
                     player.playNote(player.getLocation(), Instrument.PIANO, Note.flat(1, Note.Tone.C));
